@@ -3,8 +3,8 @@
 Typed Python client for the [TurboOCR](https://github.com/aiptimizer/TurboOCR) server.
 Sync + async, HTTP + gRPC, layout-aware Markdown rendering, searchable-PDF generation.
 
-[![PyPI](https://img.shields.io/pypi/v/turboocr.svg)](https://pypi.org/project/turboocr/)
-[![Python](https://img.shields.io/pypi/pyversions/turboocr.svg)](https://pypi.org/project/turboocr/)
+[![PyPI](https://img.shields.io/pypi/v/turboocr.svg?v=1)](https://pypi.org/project/turboocr/)
+[![Python](https://img.shields.io/pypi/pyversions/turboocr.svg?v=1)](https://pypi.org/project/turboocr/)
 [![Typed](https://img.shields.io/badge/typed-PEP_561-blue.svg)](https://peps.python.org/pep-0561/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
