@@ -22,7 +22,7 @@ from turboocr import Client
 
 PDF = Path("examples/sample/acme_invoice.pdf")
 
-client = Client(timeout=180.0)
+client = Client()
 overlay = client.make_searchable_pdf(PDF, dpi=200)
 Path("/tmp/out.pdf").write_bytes(overlay)
 ```

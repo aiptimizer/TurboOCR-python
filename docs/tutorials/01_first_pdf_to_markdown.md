@@ -105,8 +105,10 @@ response = client.recognize_pdf(
 print(f"pages={len(response.pages)}")
 ```
 
-PDFs take longer than single images. The `Client(timeout=120.0)` argument
-from earlier covers most invoices comfortably.
+A 2-page invoice comes back in well under a second on a modern GPU
+deployment — the server throughputs ~200 image-pages per second. The SDK's
+default 30-second timeout is plenty; bump it only for very large
+multi-hundred-page PDFs.
 
 ## Step 5 — Render to Markdown
 

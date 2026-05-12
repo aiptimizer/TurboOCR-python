@@ -62,7 +62,7 @@ async def process_folder(in_dir: Path, out_dir: Path, max_inflight: int = 4) -> 
         return
 
     sem = asyncio.Semaphore(max_inflight)
-    async with AsyncClient(timeout=180.0) as client:
+    async with AsyncClient(timeout=60.0) as client:
         tasks = [bounded(sem, ocr_one(client, pdf, out_dir)) for pdf in pdfs]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
