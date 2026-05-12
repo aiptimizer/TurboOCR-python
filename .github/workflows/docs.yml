@@ -1,0 +1,97 @@
+name: Docs
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - develop
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version label (e.g. 0.2 or dev); empty = derive from ref"
+        required: false
+        default: ""
+      alias:
+        description: "Alias to update (e.g. latest, dev)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build + publish versioned docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install docs extra
+        run: uv sync --extra docs
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch gh-pages branch
+        run: git fetch origin gh-pages --depth=1 || echo "gh-pages does not exist yet — mike will create it"
+
+      - name: Resolve version + alias
+        id: resolve
+        run: |
+          set -euo pipefail
+          input_version="${{ github.event.inputs.version }}"
+          input_alias="${{ github.event.inputs.alias }}"
+          if [ -n "$input_version" ]; then
+            version="$input_version"
+            alias="${input_alias:-}"
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            raw="${{ github.ref_name }}"
+            version="${raw#v}"
+            alias="latest"
+          elif [[ "${{ github.ref }}" == refs/heads/develop ]]; then
+            version="dev"
+            alias=""
+          else
+            version="manual-${{ github.sha }}"
+            alias=""
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "alias=$alias" >> "$GITHUB_OUTPUT"
+          echo "Deploying version=$version alias=$alias"
+
+      - name: Deploy with mike
+        env:
+          VERSION: ${{ steps.resolve.outputs.version }}
+          ALIAS: ${{ steps.resolve.outputs.alias }}
+        run: |
+          set -euo pipefail
+          cd docs
+          if [ -n "$ALIAS" ]; then
+            uv run --extra docs mike deploy --push --update-aliases "$VERSION" "$ALIAS"
+          else
+            uv run --extra docs mike deploy --push "$VERSION"
+          fi
+
+      - name: Ensure default alias points to `latest`
+        if: steps.resolve.outputs.alias == 'latest'
+        run: |
+          cd docs
+          uv run --extra docs mike set-default --push latest
