@@ -7,11 +7,13 @@ first.
 
 ## Available recipes
 
+- [OCR a folder of PDFs concurrently](folder_pipeline.md) — `AsyncClient`
+  + `asyncio.Semaphore` + `gather(..., return_exceptions=True)` for a
+  bounded-concurrency ingestion pipeline.
 - [Configure retries](configure_retries.md) — retry only on `503`, change
   backoff, respect `Retry-After`.
-- [Handle non-Latin PDFs](handle_non_latin_pdfs.md) — pick the right
-  Unicode font for searchable-PDF output via `font_path` or
-  `TURBO_OCR_FONT`.
+- [Non-Latin PDFs](handle_non_latin_pdfs.md) — works out of the box;
+  see this page only if you want to override the bundled font.
 - [Use a custom `httpx.Client`](use_custom_httpx_client.md) — mTLS,
   proxies, connection limits, custom CA bundles.
 - [Batch with partial failures](batch_with_partial_failures.md) — keep

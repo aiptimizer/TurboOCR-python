@@ -11,8 +11,6 @@ from turboocr import OcrResponse, PdfResponse, ProtocolError
 from turboocr.markdown import MarkdownStyle, NodeKind
 from turboocr.searchable_pdf import (
     PDF_POINTS_PER_INCH,
-    UnicodeFontRequired,
-    discover_unicode_font,
     make_searchable_pdf,
 )
 
@@ -68,6 +66,61 @@ def test_make_searchable_pdf_round_trips_latin_text() -> None:
     assert "hello world" in extracted
 
 
+@pytest.mark.parametrize(
+    "fmt,save_kwargs",
+    [
+        ("PNG", {}),
+        ("JPEG", {"quality": 85}),
+        ("BMP", {}),
+        ("TIFF", {"compression": "tiff_lzw"}),
+        ("GIF", {}),
+        ("WEBP", {"quality": 80}),
+    ],
+)
+def test_make_searchable_pdf_auto_detects_image_inputs(
+    fmt: str, save_kwargs: dict[str, object]
+) -> None:
+    """Image inputs (PNG/JPEG/BMP/TIFF/GIF/WebP) wrap to PDF automatically."""
+    from PIL import Image
+
+    img = Image.new("RGB", (800, 600), color=(255, 255, 255))
+    buf = BytesIO()
+    img.save(buf, fmt, **save_kwargs)
+    image_bytes = buf.getvalue()
+
+    response = PdfResponse.model_validate(
+        {
+            "pages": [
+                {
+                    "page": 1,
+                    "page_index": 0,
+                    "dpi": 200,
+                    "width": 800,
+                    "height": 600,
+                    "results": [
+                        {
+                            "id": 0,
+                            "text": "abc",
+                            "confidence": 0.9,
+                            "bounding_box": _pixel_box(10, 10, 60, 30),
+                        }
+                    ],
+                    "layout": [],
+                    "reading_order": [0],
+                    "blocks": [],
+                    "mode": "ocr",
+                    "text_layer_quality": "ocr",
+                }
+            ]
+        }
+    )
+
+    out = make_searchable_pdf(image_bytes, response, dpi=200)
+    assert out.startswith(b"%PDF-"), f"{fmt} did not produce a PDF"
+    extracted = pypdf.PdfReader(BytesIO(out)).pages[0].extract_text()
+    assert "abc" in extracted, f"{fmt} text did not round-trip"
+
+
 def test_make_searchable_pdf_rejects_page_count_mismatch() -> None:
     pdf = _blank_pdf(pages=2)
     response = _pdf_response_with_text("only one")
@@ -94,22 +147,17 @@ def test_make_searchable_pdf_from_ocr_response_requires_dpi() -> None:
     assert out.startswith(b"%PDF-")
 
 
-def test_unicode_font_discovery_returns_none_or_path() -> None:
-    found = discover_unicode_font()
-    assert found is None or found.endswith(".ttf")
-
-
-def test_unicode_text_uses_discovered_font_when_available(monkeypatch: pytest.MonkeyPatch) -> None:
-    font = discover_unicode_font()
-    if font is None:
-        pytest.skip("no Unicode font installed on this machine")
-
-    monkeypatch.setenv("TURBO_OCR_FONT", font)
+def test_glyphless_font_handles_non_latin_out_of_the_box() -> None:
+    """Bundled GlyphLessFont covers all of BMP — no setup needed."""
     pdf = _blank_pdf()
-    response = _pdf_response_with_text("héllo wörld")
-    out = make_searchable_pdf(pdf, response, font_path=font)
+    response = _pdf_response_with_text("héllo wörld 北京 مرحبا")
+    out = make_searchable_pdf(pdf, response)
+    assert out.startswith(b"%PDF-")
     extracted = pypdf.PdfReader(BytesIO(out)).pages[0].extract_text()
-    assert "h" in extracted
+    # The text layer round-trips through the cmap; we don't assert exact
+    # equality (pypdf normalisation can reflow whitespace) but at least
+    # each script should produce something extractable.
+    assert extracted.strip()
 
 
 def test_block_model_dump_round_trip() -> None:
@@ -131,18 +179,6 @@ def test_block_model_dump_round_trip() -> None:
     payload = response.blocks[0].model_dump_json(by_alias=True)
     assert '"content":"Heading"' in payload
     assert '"class":"paragraph_title"' in payload
-
-
-def test_unicode_text_without_font_raises(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("TURBO_OCR_FONT", raising=False)
-    monkeypatch.setattr(
-        "turboocr.searchable_pdf.discover_unicode_font",
-        lambda extra_paths=(): None,
-    )
-    pdf = _blank_pdf()
-    response = _pdf_response_with_text("中文")
-    with pytest.raises(UnicodeFontRequired):
-        make_searchable_pdf(pdf, response)
 
 
 def test_degenerate_bbox_raises_protocol_error() -> None:

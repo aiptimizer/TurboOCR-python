@@ -28,7 +28,6 @@ exceptions inherit from `APIConnectionError`.
 | `NetworkError: Connection refused` | server not running | start the docker container |
 | `DimensionsTooLarge` | image > `MAX_IMAGE_DIM` (default 16384) | downscale or raise the server limit |
 | `LayoutDisabled` | server started with `DISABLE_LAYOUT=1` | restart without that env var |
-| `UnicodeFontRequired` | non-Latin text, no Unicode font found | pass `font_path=` or set `TURBO_OCR_FONT` |
 | `PoolExhausted` | server queue full | retry with backoff, or scale `PIPELINE_POOL_SIZE` |
 | `Timeout` | per-request timeout hit | pass `timeout=N` or raise `RetryPolicy.attempts` |
 

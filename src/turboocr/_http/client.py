@@ -647,49 +647,60 @@ class Client(_BaseClient):
 
     def make_searchable_pdf(
         self,
-        pdf: ImageInput,
+        source: ImageInput,
         *,
         dpi: int = 200,
         mode: PdfMode | str | None = None,
         font_path: str | None = None,
     ) -> bytes:
-        """Return a PDF with an invisible text overlay aligned to the page geometry.
+        """Return a PDF with an invisible OCR text layer.
 
-        The output is byte-identical to the input visually but its text is
-        selectable, copyable, and full-text-searchable in every viewer. For
-        non-Latin scripts the SDK auto-discovers a Unicode font on disk; you
-        can override the lookup with `font_path` or the `TURBO_OCR_FONT`
-        env var.
+        Accepts a PDF or a single-page image. Tested input formats: PDF,
+        PNG, JPEG, BMP, TIFF, GIF, WebP. The SDK detects format from the
+        first bytes and dispatches to
+        [`recognize_pdf`][turboocr.Client.recognize_pdf] or
+        [`recognize_image`][turboocr.Client.recognize_image] accordingly,
+        wrapping the image into a one-page PDF when needed.
+
+        Output is visually identical to the input; the text is selectable,
+        copyable, and full-text-searchable in every viewer. The bundled
+        glyphless font covers every Basic Multilingual Plane codepoint so
+        non-Latin scans (CJK, Arabic, Cyrillic, …) work with no font setup.
 
         Args:
-            pdf: PDF bytes, path, or file-like object. See
+            source: PDF or image bytes / path / file-like object. See
                 `ImageInput`.
-            dpi: Rasterization DPI for the underlying recognise call
-                (default `200`; higher than `recognize_pdf` because overlay
-                alignment is more sensitive to small glyph drift).
+            dpi: Rasterization DPI for PDF inputs and the page dimension
+                used when wrapping an image input (default `200`).
             mode: PDF reader strategy; see
-                [`recognize_pdf`][turboocr.Client.recognize_pdf]. `None`
-                uses the server default.
-            font_path: Absolute path to a `.ttf`/`.otf` Unicode font. When
-                `None`, the SDK searches a list of common font locations
-                and the `TURBO_OCR_FONT` env var.
+                [`recognize_pdf`][turboocr.Client.recognize_pdf]. Ignored
+                for image inputs. `None` uses the server default.
+            font_path: Absolute path to a custom `.ttf`/`.otf` to use
+                instead of the bundled glyphless font. Only useful if you
+                specifically want a visible-text overlay.
 
         Returns:
             The output PDF as `bytes`, ready to write to disk or stream.
 
         Raises:
-            UnicodeFontRequired: Non-Latin text was detected and no
-                Unicode font could be located.
-            FontGlyphMissing: A required glyph is missing from the chosen
-                font.
+            FontGlyphMissing: Only when you pass a `font_path` to a font
+                that lacks glyphs for some of the OCR text. The default
+                code path never raises this.
             PdfRenderError: Server failed to rasterize the PDF.
             APIConnectionError: Network failure or timeout on the
-                underlying `recognize_pdf` call.
+                underlying recognise call.
             ServerError: 5xx response.
         """
-        pdf_bytes = read_image_bytes(pdf)
-        response = self.recognize_pdf(pdf_bytes, dpi=dpi, mode=mode)
-        return _overlay(pdf_bytes, response, font_path=font_path)
+        raw = read_image_bytes(source)
+        if raw.startswith(b"%PDF-"):
+            response: OcrResponse | PdfResponse = self.recognize_pdf(
+                raw, dpi=dpi, mode=mode
+            )
+        else:
+            response = self.recognize_image(
+                raw, layout=True, reading_order=True, include_blocks=True
+            )
+        return _overlay(raw, response, dpi=dpi, font_path=font_path)
 
     def to_markdown(
         self,
@@ -944,7 +955,7 @@ class AsyncClient(_BaseClient):
 
     async def make_searchable_pdf(
         self,
-        pdf: ImageInput,
+        source: ImageInput,
         *,
         dpi: int = 200,
         mode: PdfMode | str | None = None,
@@ -953,9 +964,16 @@ class AsyncClient(_BaseClient):
         """Async equivalent of
         [Client.make_searchable_pdf][turboocr.Client.make_searchable_pdf].
         """
-        pdf_bytes = read_image_bytes(pdf)
-        response = await self.recognize_pdf(pdf_bytes, dpi=dpi, mode=mode)
-        return _overlay(pdf_bytes, response, font_path=font_path)
+        raw = read_image_bytes(source)
+        if raw.startswith(b"%PDF-"):
+            response: OcrResponse | PdfResponse = await self.recognize_pdf(
+                raw, dpi=dpi, mode=mode
+            )
+        else:
+            response = await self.recognize_image(
+                raw, layout=True, reading_order=True, include_blocks=True
+            )
+        return _overlay(raw, response, dpi=dpi, font_path=font_path)
 
     async def to_markdown(
         self,

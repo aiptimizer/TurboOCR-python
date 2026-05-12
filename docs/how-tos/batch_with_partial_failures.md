@@ -38,5 +38,5 @@ partial-success is the normal case to plan for, not an edge case.
 ## Where to go next
 
 - [API: BatchResponse](../api/models.md) — full field reference.
-- [Async folder pipeline](../tutorials/02_async_folder_pipeline.md) — when
+- [OCR a folder of PDFs concurrently](folder_pipeline.md) — when
   one-call-per-batch is the wrong shape and you want one call per file.

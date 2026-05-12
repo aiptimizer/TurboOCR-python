@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 import logging
-import os
 import threading
-from collections.abc import Iterable
 from dataclasses import dataclass
+from importlib.resources import as_file, files
 from io import BytesIO
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, Protocol
+from typing import TYPE_CHECKING, Final
 
 import pypdf
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas as rl_canvas
 
 from .errors import ProtocolError
@@ -23,23 +25,22 @@ logger = logging.getLogger("turboocr.searchable_pdf")
 
 PDF_POINTS_PER_INCH: Final[float] = 72.0
 INVISIBLE_TEXT_MODE: Final[int] = 3
-DEFAULT_FONT_NAME: Final[str] = "TurboOcrUnicode"
-BUILTIN_LATIN_FONT: Final[str] = "Helvetica"
 
-_FONT_SEARCH_PATHS: Final[tuple[str, ...]] = (
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    "/usr/share/fonts/TTF/DejaVuSans.ttf",
-    "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",
-    "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
-    "/usr/share/fonts/google-noto/NotoSans-Regular.ttf",
-    "/Library/Fonts/Arial Unicode.ttf",
-    "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
-    "C:/Windows/Fonts/arial.ttf",
-)
+# Bundled glyphless font: one zero-mark glyph that every BMP codepoint
+# (U+0001..U+FFFF) maps to. Same trick Tesseract's GlyphLessFont uses —
+# the visible page is the original scan, so the font is only needed so
+# PDF readers can compute text-selection bboxes. ~760 bytes; ships in
+# the wheel via package-data.
+GLYPHLESS_FONT_NAME: Final[str] = "TurboOcrGlyphless"
+_GLYPHLESS_FONT_FILE: Final[str] = "glyphless.ttf"
+
+# reportlab's pdfmetrics holds a process-wide global font registry. Multiple
+# threads calling make_searchable_pdf concurrently would race the check +
+# register pair. Lock + idempotent check protects against double registration.
+_REGISTRATION_LOCK: Final[threading.Lock] = threading.Lock()
 
 
-class FontResolver(Protocol):
-    def __call__(self, sample_text: str) -> str: ...
+_PDF_MAGIC: Final[bytes] = b"%PDF-"
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,67 +51,65 @@ class _OverlayPage:
     items: list[TextItem]
 
 
-def discover_unicode_font(extra_paths: Iterable[str] = ()) -> str | None:
-    env_path = os.environ.get("TURBO_OCR_FONT")
-    candidates: list[str] = []
-    if env_path:
-        candidates.append(env_path)
-    candidates.extend(extra_paths)
-    candidates.extend(_FONT_SEARCH_PATHS)
-    for path in candidates:
-        if Path(path).is_file():
-            return path
-    return None
+def _wrap_image_as_pdf(image_bytes: bytes, *, dpi: int) -> bytes:
+    """Wrap a single image (JPEG/PNG/TIFF/BMP/…) as a one-page PDF.
 
-
-# reportlab's pdfmetrics holds a process-wide global font registry. Two
-# threads calling make_searchable_pdf concurrently could race on the
-# check-then-register, double-registering or partially observing the new
-# font. This lock serialises the check + registerFont pair.
-_FONT_REGISTRATION_LOCK: Final[threading.Lock] = threading.Lock()
-
-
-def _register_font(font_path: str) -> str:
-    # Deferred: pdfbase/ttfonts only loads when non-Latin scripts force
-    # custom-font registration, sparing the import cost for Latin-only callers.
-    from reportlab.pdfbase import pdfmetrics
-    from reportlab.pdfbase.ttfonts import TTFont
-
-    with _FONT_REGISTRATION_LOCK:
-        if DEFAULT_FONT_NAME not in pdfmetrics.getRegisteredFontNames():
-            pdfmetrics.registerFont(TTFont(DEFAULT_FONT_NAME, font_path))
-    return DEFAULT_FONT_NAME
-
-
-def _needs_unicode(items: list[TextItem]) -> bool:
-    return any(any(ord(c) > 127 for c in item.text) for item in items)
+    The page is sized so that the image fills it at the given DPI:
+    `page_width_pt = pixels * 72 / dpi`. The image is drawn at full
+    bleed so the OCR bounding boxes (which are in pixel coordinates at
+    the source resolution) land in the right place.
+    """
+    reader = ImageReader(BytesIO(image_bytes))
+    width_px, height_px = reader.getSize()
+    width_pt = width_px * PDF_POINTS_PER_INCH / dpi
+    height_pt = height_px * PDF_POINTS_PER_INCH / dpi
+    buf = BytesIO()
+    canvas = rl_canvas.Canvas(buf, pagesize=(width_pt, height_pt))
+    canvas.drawImage(reader, 0, 0, width=width_pt, height=height_pt)
+    canvas.showPage()
+    canvas.save()
+    return buf.getvalue()
 
 
 class FontError(RuntimeError):
-    pass
+    """Raised when a caller-supplied font cannot render the OCR text.
 
-
-class UnicodeFontRequired(FontError):
-    pass
+    The default code path never raises this — the bundled glyphless font
+    covers every Basic Multilingual Plane codepoint. You can only hit it
+    by passing `font_path=<my.ttf>` to a font that lacks glyphs the OCR
+    text needs.
+    """
 
 
 class FontGlyphMissing(FontError):
-    pass
+    """A user-supplied font has no glyph for some OCR character."""
 
 
-def _resolve_font(items_per_page: list[list[TextItem]], font_path: str | None) -> str:
+def _register_glyphless_font() -> str:
+    """Register the bundled glyphless TTF with reportlab. Idempotent."""
+    with _REGISTRATION_LOCK:
+        if GLYPHLESS_FONT_NAME in pdfmetrics.getRegisteredFontNames():
+            return GLYPHLESS_FONT_NAME
+        font_resource = files("turboocr._data").joinpath(_GLYPHLESS_FONT_FILE)
+        with as_file(font_resource) as font_path:
+            pdfmetrics.registerFont(TTFont(GLYPHLESS_FONT_NAME, str(font_path)))
+    return GLYPHLESS_FONT_NAME
+
+
+def _register_custom_font(font_path: str) -> str:
+    """Register a user-supplied TTF under its file stem."""
+    name = Path(font_path).stem or "TurboOcrCustomFont"
+    with _REGISTRATION_LOCK:
+        if name not in pdfmetrics.getRegisteredFontNames():
+            pdfmetrics.registerFont(TTFont(name, font_path))
+    return name
+
+
+def _resolve_font(font_path: str | None) -> str:
     if font_path:
-        return _register_font(font_path)
-    if not any(_needs_unicode(p) for p in items_per_page):
-        return BUILTIN_LATIN_FONT
-    discovered = discover_unicode_font()
-    if discovered:
-        logger.debug("turbo-ocr searchable_pdf using font %s", discovered)
-        return _register_font(discovered)
-    raise UnicodeFontRequired(
-        "non-Latin text detected but no Unicode font found; "
-        "pass font_path=<.ttf> or set TURBO_OCR_FONT"
-    )
+        logger.debug("turbo-ocr searchable_pdf using custom font %s", font_path)
+        return _register_custom_font(font_path)
+    return _register_glyphless_font()
 
 
 def _draw_invisible_item(
@@ -134,8 +133,9 @@ def _draw_invisible_item(
     text_width = canvas.stringWidth(item.text, font_name, font_size)
     if text_width <= 0:
         raise FontGlyphMissing(
-            f"font {font_name!r} cannot render OCR item id={item.id} (text={item.text!r}); "
-            "pass font_path=<.ttf supporting these scripts> or set TURBO_OCR_FONT"
+            f"font {font_name!r} cannot render OCR item id={item.id} "
+            f"(text={item.text!r}); drop the font_path= override to fall "
+            "back to the bundled glyphless font"
         )
 
     canvas.saveState()
@@ -226,13 +226,34 @@ def _coerce_to_pdf_response(
 
 
 def make_searchable_pdf(
-    original_pdf: bytes,
+    original: bytes,
     response: PdfResponse | OcrResponse,
     *,
     dpi: int | None = None,
     font_path: str | None = None,
 ) -> bytes:
-    reader = pypdf.PdfReader(BytesIO(original_pdf))
+    """Overlay an invisible OCR text layer on the input.
+
+    Accepts a PDF or any single-page image. Tested input formats: PDF,
+    PNG, JPEG, BMP, TIFF, GIF, WebP. Image inputs are wrapped into a
+    single-page PDF first, sized to the image's pixel dimensions at
+    `dpi`. The detection is by magic bytes, so the caller does not
+    have to tell the function which format the input is in.
+
+    By default uses a bundled glyphless font that covers every Basic
+    Multilingual Plane codepoint, so non-Latin scans (CJK, Arabic, Cyrillic,
+    …) work out of the box with zero configuration.
+
+    Pass `font_path=<my.ttf>` only if you have a specific reason to embed a
+    real visible font instead.
+    """
+    if not original.startswith(_PDF_MAGIC):
+        if dpi is None:
+            raise ValueError(
+                "dpi must be provided when overlaying an image input"
+            )
+        original = _wrap_image_as_pdf(original, dpi=dpi)
+    reader = pypdf.PdfReader(BytesIO(original))
     if isinstance(response, OcrResponse) and reader.pages:
         media = reader.pages[0].mediabox
         pdf_response = _coerce_to_pdf_response(
@@ -256,7 +277,7 @@ def make_searchable_pdf(
         )
 
     items_per_page = [_items_for_page(p) for p in pdf_response.pages]
-    font_name = _resolve_font(items_per_page, font_path)
+    font_name = _resolve_font(font_path)
 
     overlay_pages: list[_OverlayPage] = []
     for original_page, ocr_page, items in zip(

@@ -141,7 +141,7 @@ all come through as readable Markdown.
 
 - For a recipe-shaped reminder of how to tweak retries, see
   [Configure retries](../how-tos/configure_retries.md).
-- To scale this from one file to a whole folder, continue with
-  [Tutorial 2 — async folder pipeline](02_async_folder_pipeline.md).
+- To scale this from one file to a whole folder, see the
+  [Folder pipeline recipe](../how-tos/folder_pipeline.md).
 - For background on what `blocks` and `reading_order` actually mean, see
   [Layout & reading order](../explanation/layout_and_reading_order.md).

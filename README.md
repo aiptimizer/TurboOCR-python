@@ -137,7 +137,6 @@ exceptions inherit from `APIConnectionError`.
 | `NetworkError: Connection refused` | server not running | start the docker container (above) |
 | `DimensionsTooLarge` | image > `MAX_IMAGE_DIM` (default 16384) | downscale, or raise the server limit |
 | `LayoutDisabled` | server started with `DISABLE_LAYOUT=1` | restart without that env var |
-| `UnicodeFontRequired` | non-Latin text, no Unicode font found | pass `font_path=` or set `TURBO_OCR_FONT` |
 | `PoolExhausted` | server queue full | retry with backoff, or scale `PIPELINE_POOL_SIZE` |
 | `Timeout` | per-request timeout hit | pass `timeout=N`, or raise `RetryPolicy.attempts` |
 
@@ -150,9 +149,9 @@ turbo-ocr searchable-pdf doc.pdf -o out.pdf --font-path /path/to/font.ttf
 turbo-ocr health --ready
 ```
 
-`--output` accepts `json | blocks | text | markdown`. Reads `TURBO_OCR_BASE_URL`,
-`TURBO_OCR_API_KEY`, `TURBO_OCR_FONT` from the environment. Run
-`turbo-ocr --help` for the full surface.
+`--output` accepts `json | blocks | text | markdown`. Reads `TURBO_OCR_BASE_URL`
+and `TURBO_OCR_API_KEY` from the environment. Run `turbo-ocr --help`
+for the full surface.
 
 ## Logging
 

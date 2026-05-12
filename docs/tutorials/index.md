@@ -13,9 +13,10 @@ the way it does, see [Explanation](../explanation/index.md).
 1. [Your first PDF → Markdown pipeline](01_first_pdf_to_markdown.md) —
    install the package, run the TurboOCR server, OCR your first image, then
    convert a real PDF invoice to Markdown and save it to disk. Beginner.
-2. [Building an async folder-watcher pipeline](02_async_folder_pipeline.md) —
-   take what you learned in tutorial 1 and scale it: drop PDFs into a folder
-   and have them OCR'd concurrently with bounded parallelism. Intermediate.
+
+Need a quick recipe rather than a walkthrough? See
+[How-to guides](../how-tos/index.md) — including
+[OCR a folder of PDFs concurrently](../how-tos/folder_pipeline.md).
 
 Each tutorial uses the bundled `acme_invoice.pdf` / `acme_invoice.png`
 fixtures from the [examples directory](https://github.com/aiptimizer/TurboOCR-python/tree/main/examples/sample),

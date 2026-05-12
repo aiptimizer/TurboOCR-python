@@ -336,7 +336,7 @@ class GrpcClient(_BaseGrpcClient):
 
     def make_searchable_pdf(
         self,
-        pdf: ImageInput,
+        source: ImageInput,
         *,
         dpi: int = 200,
         mode: PdfMode | str | None = None,
@@ -345,9 +345,16 @@ class GrpcClient(_BaseGrpcClient):
         """gRPC equivalent of
         [`Client.make_searchable_pdf`][turboocr.Client.make_searchable_pdf].
         """
-        pdf_bytes = read_image_bytes(pdf)
-        response = self.recognize_pdf(pdf_bytes, dpi=dpi, mode=mode)
-        return _overlay(pdf_bytes, response, font_path=font_path)
+        raw = read_image_bytes(source)
+        if raw.startswith(b"%PDF-"):
+            response: OcrResponse | PdfResponse = self.recognize_pdf(
+                raw, dpi=dpi, mode=mode
+            )
+        else:
+            response = self.recognize_image(
+                raw, layout=True, reading_order=True, include_blocks=True
+            )
+        return _overlay(raw, response, dpi=dpi, font_path=font_path)
 
 
 class _AsyncGrpcClientKwargs(TypedDict, total=False):
@@ -572,7 +579,7 @@ class AsyncGrpcClient(_BaseGrpcClient):
 
     async def make_searchable_pdf(
         self,
-        pdf: ImageInput,
+        source: ImageInput,
         *,
         dpi: int = 200,
         mode: PdfMode | str | None = None,
@@ -581,6 +588,13 @@ class AsyncGrpcClient(_BaseGrpcClient):
         """Async equivalent of
         [`GrpcClient.make_searchable_pdf`][turboocr.GrpcClient.make_searchable_pdf].
         """
-        pdf_bytes = read_image_bytes(pdf)
-        response = await self.recognize_pdf(pdf_bytes, dpi=dpi, mode=mode)
-        return _overlay(pdf_bytes, response, font_path=font_path)
+        raw = read_image_bytes(source)
+        if raw.startswith(b"%PDF-"):
+            response: OcrResponse | PdfResponse = await self.recognize_pdf(
+                raw, dpi=dpi, mode=mode
+            )
+        else:
+            response = await self.recognize_image(
+                raw, layout=True, reading_order=True, include_blocks=True
+            )
+        return _overlay(raw, response, dpi=dpi, font_path=font_path)

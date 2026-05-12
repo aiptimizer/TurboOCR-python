@@ -66,6 +66,7 @@ dev = [
     "mypy>=1.13",
     "grpcio-tools>=1.66",
     "pypdfium2>=4.30",  # examples/sample/generate.py only — renders PDF page to PNG
+    "fonttools>=4.55",  # scripts/generate_glyphless_font.py only — build-time font gen
 ]
 
 [project.scripts]
@@ -79,6 +80,9 @@ Server = "https://github.com/aiptimizer/TurboOCR"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/turboocr"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/turboocr/_data/glyphless.ttf" = "turboocr/_data/glyphless.ttf"
 
 [tool.hatch.build.targets.sdist]
 include = ["src/turboocr", "tests", "examples", "docs", "README.md", "LICENSE"]
@@ -127,7 +131,7 @@ module = "turboocr._grpc._stubs.*"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = ["reportlab", "reportlab.*", "pypdfium2", "pypdfium2.*"]
+module = ["reportlab", "reportlab.*", "pypdfium2", "pypdfium2.*", "fontTools", "fontTools.*"]
 ignore_missing_imports = true
 
 # Tests get type-discipline relief — strict mypy applies to src/ only,

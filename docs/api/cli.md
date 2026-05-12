@@ -45,7 +45,7 @@ Generate a searchable PDF with an invisible text overlay.
 | `-o`, `--out` | output PDF path (required) |
 | `--dpi` | rasterization DPI (default `200`) |
 | `--mode` | `ocr` · `text` · `auto` · `auto_verified` · `geometric` (default `ocr`) |
-| `--font-path` | TTF for non-Latin scripts; env: `TURBO_OCR_FONT` |
+| `--font-path` | optional custom TTF (default is the bundled glyphless font, covers all BMP) |
 | `--base-url`, `--api-key` | as above |
 
 ### `turbo-ocr blocks <pdf>`
@@ -63,6 +63,5 @@ Probe `/healthz`; with `--ready`, also requires the pipeline to be ready.
 |---|---|
 | `TURBO_OCR_BASE_URL` | every command — default `http://localhost:8000` |
 | `TURBO_OCR_API_KEY` | every command — sent as bearer or `X-API-Key` |
-| `TURBO_OCR_FONT` | `searchable-pdf` — TTF path for non-Latin scripts |
 
 Run `turbo-ocr <command> --help` for the live, authoritative option list.

@@ -103,7 +103,7 @@ def searchable_pdf(
     mode: PdfMode = PdfMode.ocr,
     font_path: Annotated[
         str | None,
-        typer.Option(envvar="TURBO_OCR_FONT", help="TTF for non-Latin scripts"),
+        typer.Option(help="optional custom TTF; default bundled glyphless font covers all BMP"),
     ] = None,
 ) -> None:
     with _build_client(base_url, api_key) as client:

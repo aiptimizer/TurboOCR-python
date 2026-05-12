@@ -65,33 +65,32 @@ plugins:
       canonical_version: latest
 
 nav:
-  - Overview: index.md
-  - Tutorials:
-      - tutorials/index.md
-      - First PDF→Markdown: tutorials/01_first_pdf_to_markdown.md
-      - Async folder pipeline: tutorials/02_async_folder_pipeline.md
+  - Get started: index.md
   - How-to:
       - how-tos/index.md
+      - Folder pipeline: how-tos/folder_pipeline.md
       - Configure retries: how-tos/configure_retries.md
       - Non-Latin PDFs: how-tos/handle_non_latin_pdfs.md
       - Custom httpx.Client: how-tos/use_custom_httpx_client.md
       - Batch partial failures: how-tos/batch_with_partial_failures.md
+  - Tutorials:
+      - tutorials/index.md
+      - First PDF→Markdown: tutorials/01_first_pdf_to_markdown.md
+  - API reference:
+      - HTTP clients: api/clients.md
+      - gRPC clients: api/grpc.md
+      - Response models: api/models.md
+      - Layout & blocks: api/layout.md
+      - Markdown rendering: api/markdown.md
+      - Searchable PDF: api/searchable_pdf.md
+      - Retries, timeouts, hooks: api/retry.md
+      - Errors: api/errors.md
+  - CLI: api/cli.md
   - Explanation:
       - explanation/index.md
       - Layout & reading order: explanation/layout_and_reading_order.md
       - Searchable PDF internals: explanation/searchable_pdf_internals.md
       - HTTP vs gRPC: explanation/http_vs_grpc.md
-  - Clients:
-      - HTTP — Client / AsyncClient: api/clients.md
-      - gRPC — GrpcClient / AsyncGrpcClient: api/grpc.md
-  - Models:
-      - Response objects: api/models.md
-      - Layout & blocks: api/layout.md
-  - Markdown rendering: api/markdown.md
-  - Searchable PDF: api/searchable_pdf.md
-  - Retries, timeouts, hooks: api/retry.md
-  - Errors: api/errors.md
-  - CLI: api/cli.md
   - Examples: examples.md
 
 markdown_extensions:
