@@ -5,9 +5,16 @@ body the same server would emit on the HTTP path. When populated we feed
 it straight to ``OcrResponse.model_validate_json`` — same validation, same
 shape, zero field-by-field copying. The structural fallback runs only
 when ``json_response`` is empty (test servers / stripped mocks).
+
+For ``OCRPageResult`` the inner ``json_response`` carries only the OCR
+payload (results / layout / blocks / reading_order); the per-page
+scalars (page number, dpi, dimensions, mode, text-layer quality) live as
+real proto fields on the wrapper. We merge them in before validating.
 """
 
 from __future__ import annotations
+
+import json
 
 from ..models import (
     BatchResponse,
@@ -66,9 +73,24 @@ def parse_batch_response(resp: pb2.OCRBatchResponse) -> BatchResponse:
 
 
 def _pdf_page_from_proto(page: pb2.OCRPageResult, index: int) -> PdfPage:
+    mode_value = page.mode or PdfMode.ocr.value
+    text_layer_quality = page.text_layer_quality or "absent"
+
     if page.json_response:
-        # Per-page JSON: identical to the HTTP `/ocr/pdf` page entry.
-        return PdfPage.model_validate_json(page.json_response)
+        # The inner JSON has only the OCR payload (results/layout/blocks/
+        # reading_order). The per-page scalars are on the proto wrapper;
+        # merge them in before validating so PdfPage has every required
+        # field.
+        inner = json.loads(page.json_response)
+        inner.setdefault("page", page.page_number)
+        inner.setdefault("page_index", index)
+        inner.setdefault("dpi", page.dpi)
+        inner.setdefault("width", page.width)
+        inner.setdefault("height", page.height)
+        inner.setdefault("mode", mode_value)
+        inner.setdefault("text_layer_quality", text_layer_quality)
+        return PdfPage.model_validate(inner)
+
     items: list[TextItem] = []
     for r in page.results:
         items.append(
@@ -78,7 +100,6 @@ def _pdf_page_from_proto(page: pb2.OCRPageResult, index: int) -> PdfPage:
                 bounding_box=BoundingBox(points=_quad_from_bbox(list(r.bounding_box))),
             )
         )
-    mode_value = page.mode or PdfMode.ocr.value
     return PdfPage(
         page=page.page_number,
         page_index=index,
@@ -87,7 +108,7 @@ def _pdf_page_from_proto(page: pb2.OCRPageResult, index: int) -> PdfPage:
         height=page.height,
         results=items,
         mode=PdfMode(mode_value),
-        text_layer_quality=page.text_layer_quality or "absent",
+        text_layer_quality=text_layer_quality,
     )
 
 
