@@ -1,0 +1,4874 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Typed Python client for the TurboOCR server.">
+      
+      
+      
+        <link rel="canonical" href="https://aiptimizer.github.io/turboocr-python/latest/api/clients/">
+      
+      
+        <link rel="prev" href="../../explanation/http_vs_grpc/">
+      
+      
+        <link rel="next" href="../grpc/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>HTTP — Client / AsyncClient - turboocr</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#http-clients" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="turboocr" class="md-header__button md-logo" aria-label="turboocr" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            turboocr
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HTTP — Client / AsyncClient
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aiptimizer/turboocr-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aiptimizer/turboocr-python
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="turboocr" class="md-nav__button md-logo" aria-label="turboocr" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    turboocr
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aiptimizer/turboocr-python" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    aiptimizer/turboocr-python
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/01_first_pdf_to_markdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First PDF→Markdown
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/02_async_folder_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Async folder pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How-to
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    How-to
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-tos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How-to guides
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-tos/configure_retries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure retries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-tos/handle_non_latin_pdfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Non-Latin PDFs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-tos/use_custom_httpx_client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom httpx.Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-tos/batch_with_partial_failures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Batch partial failures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explanation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Explanation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explanation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/layout_and_reading_order/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layout & reading order
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/searchable_pdf_internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Searchable PDF internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/http_vs_grpc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP vs gRPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clients
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clients
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP — Client / AsyncClient
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP — Client / AsyncClient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#turboocr.Client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.from_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_base64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_base64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.make_searchable_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;make_searchable_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.to_markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_markdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asyncclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncClient
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AsyncClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" AsyncClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.from_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_base64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_base64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.make_searchable_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;make_searchable_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.to_markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_markdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grpc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gRPC — GrpcClient / AsyncGrpcClient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Response objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../layout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Layout & blocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Markdown rendering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../searchable_pdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Searchable PDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../retry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Retries, timeouts, hooks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#turboocr.Client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;Client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.from_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;close
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_base64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_base64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.recognize_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.make_searchable_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;make_searchable_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.Client.to_markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_markdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asyncclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AsyncClient
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;AsyncClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" AsyncClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.from_env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;from_env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.aclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;aclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_base64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_base64
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_pixels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pixels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.recognize_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;recognize_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.make_searchable_pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;make_searchable_pdf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turboocr.AsyncClient.to_markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;to_markdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="http-clients">HTTP clients<a class="headerlink" href="#http-clients" title="Permanent link">&para;</a></h1>
+<p><code>Client</code> and <code>AsyncClient</code> share an identical method surface — anything you
+can do with one, you can <code>await</code> with the other.</p>
+<p>Construct either directly with <code>base_url</code>, from env vars with
+<code>Client.from_env()</code>, or pass a pre-built <code>httpx.Client</code> via <code>http_client=</code>.
+The introspection properties (<code>.base_url</code>, <code>.auth_scheme</code>, <code>.default_headers</code>,
+<code>.timeout</code>, <code>.retry</code>) read back the resolved config.</p>
+<h2 id="client"><code>Client</code><a class="headerlink" href="#client" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="turboocr.Client" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">Client</span>
+
+
+<a href="#turboocr.Client" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">Client</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">auth_scheme</span><span class="p">:</span> <span class="n"><span title="turboocr._core.env.AuthScheme">AuthScheme</span></span> <span class="o">=</span> <span class="s1">&#39;bearer&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="turboocr._core.env.DEFAULT_TIMEOUT">DEFAULT_TIMEOUT</span></span><span class="p">,</span> <span class="n">default_headers</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            RetryPolicy
+
+
+  
+      dataclass
+   (turboocr._core.retry.RetryPolicy)" href="../retry/#turboocr.RetryPolicy">RetryPolicy</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n"><span title="httpx.BaseTransport">BaseTransport</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="p">:</span> <span class="n"><span title="httpx.Client">Client</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limits</span><span class="p">:</span> <span class="n"><span title="httpx.Limits">Limits</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_request</span><span class="p">:</span> <span class="n"><span title="turboocr._http.client.SyncRequestHook">SyncRequestHook</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_response</span><span class="p">:</span> <span class="n"><span title="turboocr._http.client.SyncResponseHook">SyncResponseHook</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="turboocr._http.client._BaseClient">_BaseClient</span></code></p>
+
+
+
+        <p>Synchronous HTTP client for the Turbo-OCR server.</p>
+<p>Holds a pooled <code>httpx.Client</code> and the auth / retry configuration used
+by every request method. Prefer instantiating with <code>with Client(...) as
+client:</code> so the underlying connection pool is closed deterministically.</p>
+
+        <p>Build a <code>Client</code> and (unless <code>http_client</code> is supplied) its <code>httpx.Client</code>.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>base_url</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Server origin, e.g. <code>"https://ocr.example.com"</code>. Falls
+back to the <code>TURBO_OCR_BASE_URL</code> env var, and finally to
+<code>"http://localhost:8000"</code> when both are absent.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>api_key</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Secret used for bearer auth (or <code>X-API-Key</code> when
+<code>auth_scheme="x-api-key"</code>). Falls back to the
+<code>TURBO_OCR_API_KEY</code> env var. May be <code>None</code> for unauthenticated
+deployments.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>auth_scheme</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p><code>"bearer"</code> (default) sends <code>Authorization: Bearer
+&lt;key&gt;</code>; <code>"x-api-key"</code> sends an <code>X-API-Key</code> header. May also
+be a custom callable <code>(api_key) -&gt; (header_name,
+header_value)</code> for non-standard schemes.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.env.AuthScheme">AuthScheme</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>&#39;bearer&#39;</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout in seconds, applied to the
+underlying <code>httpx.Client</code>. Overridable per call via the
+<code>timeout=</code> kwarg on each <code>recognize_*</code> method.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code><span title="turboocr._core.env.DEFAULT_TIMEOUT">DEFAULT_TIMEOUT</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>default_headers</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Extra headers merged into every request (e.g.
+tenant tags, trace IDs). Authorization headers derived from
+<code>api_key</code>/<code>auth_scheme</code> win on conflict.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="collections.abc.Mapping">Mapping</span>[<span title="str">str</span>, <span title="str">str</span>] | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>retry</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" title="            RetryPolicy
+
+
+  
+      dataclass
+  " href="../retry/#turboocr.RetryPolicy"><code>RetryPolicy</code></a> for transient
+failures. Defaults to <code>RetryPolicy()</code> (3 attempts, 0.25s
+base backoff with jitter, retrying 429/502/503/504).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            RetryPolicy
+
+
+  
+      dataclass
+   (turboocr._core.retry.RetryPolicy)" href="../retry/#turboocr.RetryPolicy">RetryPolicy</a> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>transport</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Optional <code>httpx.BaseTransport</code> to swap in — useful
+for <code>httpx.MockTransport</code> in tests. Ignored when
+<code>http_client</code> is also passed.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="httpx.BaseTransport">BaseTransport</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>http_client</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Pre-configured <code>httpx.Client</code> to reuse instead of
+letting <code>Client</code> build its own. When supplied, <code>transport</code>,
+<code>limits</code>, <code>on_request</code>, <code>on_response</code>, and the auth/header
+kwargs only affect the auth dict used per request — the
+provided client's own headers/transport are respected as-is.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="httpx.Client">Client</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limits</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Connection pool sizing. Defaults to <code>max_connections=100</code>,
+<code>max_keepalive_connections=20</code>, <code>keepalive_expiry=15.0s</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="httpx.Limits">Limits</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>on_request</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Synchronous hook <code>(httpx.Request) -&gt; None</code> invoked
+before each request is sent. Use for trace propagation or
+logging.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.client.SyncRequestHook">SyncRequestHook</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>on_response</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Synchronous hook <code>(httpx.Response) -&gt; None</code> invoked
+after each response is received.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.client.SyncResponseHook">SyncResponseHook</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>If <code>auth_scheme</code> is unrecognised when
+<code>api_key</code> is present.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">METHOD</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            from_env
+
+
+  
+      classmethod
+   (turboocr.Client.from_env)" href="#turboocr.Client.from_env">from_env</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Construct a <code>Client</code> driven by <code>TURBO_OCR_BASE_URL</code> / <code>TURBO_OCR_API_KEY</code> env vars.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            close (turboocr.Client.close)" href="#turboocr.Client.close">close</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Close the underlying HTTP session. Use the context manager when possible.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_image (turboocr.Client.recognize_image)" href="#turboocr.Client.recognize_image">recognize_image</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>OCR a single image and return text plus optional layout structure.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_base64 (turboocr.Client.recognize_base64)" href="#turboocr.Client.recognize_base64">recognize_base64</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>OCR an image whose bytes are already base64-encoded.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_pixels (turboocr.Client.recognize_pixels)" href="#turboocr.Client.recognize_pixels">recognize_pixels</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>OCR a raw RGB/RGBA pixel buffer, skipping image-decode on both ends.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_batch (turboocr.Client.recognize_batch)" href="#turboocr.Client.recognize_batch">recognize_batch</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>OCR multiple images in a single round-trip.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_pdf (turboocr.Client.recognize_pdf)" href="#turboocr.Client.recognize_pdf">recognize_pdf</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>OCR every page of a PDF.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            health (turboocr.Client.health)" href="#turboocr.Client.health">health</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Probe the server's health endpoints.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            make_searchable_pdf (turboocr.Client.make_searchable_pdf)" href="#turboocr.Client.make_searchable_pdf">make_searchable_pdf</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Return a PDF with an invisible text overlay aligned to the page geometry.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            to_markdown (turboocr.Client.to_markdown)" href="#turboocr.Client.to_markdown">to_markdown</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>One-call OCR + layout + reading-order + blocks → Markdown.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.from_env" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_env</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#turboocr.Client.from_env" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_env</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">:</span> <span class="n"><span title="typing.Unpack">Unpack</span></span><span class="p">[</span><span class="n"><span title="turboocr._http.client._ClientKwargs">_ClientKwargs</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Construct a <code>Client</code> driven by <code>TURBO_OCR_BASE_URL</code> / <code>TURBO_OCR_API_KEY</code> env vars.</p>
+<p>Plain <code>Client()</code> already reads those env vars when the corresponding
+kwarg is <code>None</code>. This factory exists for callers who want the
+env-aware origin to be explicit in their code. Pass keyword overrides
+to take precedence over the env values.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.close" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">close</span>
+
+
+<a href="#turboocr.Client.close" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Close the underlying HTTP session. Use the context manager when possible.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.recognize_image" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_image</span>
+
+
+<a href="#turboocr.Client.recognize_image" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>OCR a single image and return text plus optional layout structure.</p>
+<p>Accepts the broadest possible set of image-shaped inputs: file paths
+(<code>str</code> / <code>Path</code>), in-memory bytes, file-like objects with <code>.read()</code>,
+numpy arrays, and PIL <code>Image</code> instances. The bytes are POSTed as
+<code>multipart/form-data</code>; image decoding happens server-side.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>image</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>The image to recognize. See
+<code>ImageInput</code> for the accepted types.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.content.ImageInput">ImageInput</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>layout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Pass <code>True</code> to have the server return region
+classifications (titles, paragraphs, tables, formulas, …)
+on <code>OcrResponse.layout</code>. Defaults to the server's default
+when <code>None</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>reading_order</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Pass <code>True</code> to receive a <code>reading_order</code> list of
+indices into <code>results</code> giving human reading order. Requires
+<code>layout</code> (implicitly enabled server-side).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>include_blocks</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Pass <code>True</code> for paragraph-level blocks with
+their reading order on <code>OcrResponse.blocks</code> (and synthesises
+<code>.tables</code> / <code>.formulas</code>).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds. <code>None</code> uses
+the client-level <code>timeout</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>An <a class="autorefs autorefs-internal" title="            OcrResponse" href="../models/#turboocr.OcrResponse"><code>OcrResponse</code></a> with <code>.results</code> (token</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>boxes), plus <code>.layout</code>, <code>.reading_order</code>, <code>.blocks</code>, <code>.tables</code>,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>and <code>.formulas</code> when requested.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Malformed input (e.g. unsupported image
+format, missing file).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ImageDecodeError (turboocr.errors.ImageDecodeError)" href="../errors/#turboocr.ImageDecodeError">ImageDecodeError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>The server could not decode the bytes as an
+image.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            DimensionsTooLarge (turboocr.errors.DimensionsTooLarge)" href="../errors/#turboocr.DimensionsTooLarge">DimensionsTooLarge</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Image exceeds the server's pixel budget.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure, timeout, or unparseable
+response after the retry policy is exhausted.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response that is not retryable.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">turboocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">with</span> <span class="n">Client</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize_image</span><span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s2">&quot;invoice.png&quot;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reading_order</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.recognize_base64" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_base64</span>
+
+
+<a href="#turboocr.Client.recognize_base64" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_base64</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>OCR an image whose bytes are already base64-encoded.</p>
+<p>Useful when the image arrived over a JSON wire and you'd rather not
+round-trip through <code>b64decode</code> just to hand it back to the SDK.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>b64</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Base64-encoded image bytes (the raw payload — no
+<code>"data:image/..."</code> URI prefix).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="str">str</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>layout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>reading_order</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>include_blocks</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>An <a class="autorefs autorefs-internal" title="            OcrResponse" href="../models/#turboocr.OcrResponse"><code>OcrResponse</code></a>, identical in shape to</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>what <a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a></p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>returns.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Malformed or non-base64 input.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ImageDecodeError (turboocr.errors.ImageDecodeError)" href="../errors/#turboocr.ImageDecodeError">ImageDecodeError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Decoded bytes are not a valid image.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure, timeout, or unparseable
+response.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.recognize_pixels" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_pixels</span>
+
+
+<a href="#turboocr.Client.recognize_pixels" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_pixels</span><span class="p">(</span><span class="n">pixels</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n">channels</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>OCR a raw RGB/RGBA pixel buffer, skipping image-decode on both ends.</p>
+<p>The server's JPEG/PNG decoder is bypassed, which removes ~5-15 ms
+per request for pipelines that already hold uncompressed pixels.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>pixels</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Raw pixel buffer. Pass <code>bytes</code> directly, or anything
+<code>ImageInput</code> accepts (numpy
+<code>.tobytes()</code>, PIL <code>Image.tobytes()</code>, …).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.content.ImageInput">ImageInput</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>width</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Image width in pixels. Must match the buffer's row
+stride.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>height</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Image height in pixels.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>channels</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Number of channels per pixel — <code>3</code> for RGB
+(default), <code>4</code> for RGBA. Other values are rejected by the
+server.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>3</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>layout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>reading_order</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>include_blocks</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>An <a class="autorefs autorefs-internal" title="            OcrResponse" href="../models/#turboocr.OcrResponse"><code>OcrResponse</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Dimensions or channel count are invalid, or
+<code>width * height * channels</code> does not match the buffer
+length.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            DimensionsTooLarge (turboocr.errors.DimensionsTooLarge)" href="../errors/#turboocr.DimensionsTooLarge">DimensionsTooLarge</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Image exceeds the server's pixel budget.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.recognize_batch" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_batch</span>
+
+
+<a href="#turboocr.Client.recognize_batch" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_batch</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n"><span title="collections.abc.Iterable">Iterable</span></span><span class="p">[</span><span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>OCR multiple images in a single round-trip.</p>
+<p>Per-slot failures are surfaced on
+<a class="autorefs autorefs-internal" title="            BatchResponse" href="../models/#turboocr.BatchResponse"><code>BatchResponse.errors</code></a> (a parallel
+<code>list[str | None]</code>) so one bad input never fails the whole batch.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>images</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Iterable of image inputs (mixed types are fine —
+paths, bytes, file-like objects, numpy arrays, PIL images
+may all appear in the same batch).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="turboocr._core.content.ImageInput">ImageInput</span>]</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>layout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Applied uniformly to every image. Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>reading_order</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Applied uniformly to every image.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>include_blocks</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Applied uniformly to every image.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>A <a class="autorefs autorefs-internal" title="            BatchResponse" href="../models/#turboocr.BatchResponse"><code>BatchResponse</code></a> whose</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p><code>batch_results</code> and <code>errors</code> lists are parallel and the same</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>length as <code>images</code>. Prefer</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" title="            iter_results" href="../models/#turboocr.BatchResponse.iter_results"><code>BatchResponse.iter_results</code></a></p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>for tagged <code>BatchSuccess</code> / <code>BatchFailure</code> iteration instead of</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>zipping the two lists by hand.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><span title="ValueError">ValueError</span></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Empty input. The server rejects empty batches —
+feed at least one image, or skip the call entirely.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout on the
+round-trip itself (per-slot decode failures land in
+<code>errors</code>, not as exceptions).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">turboocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">with</span> <span class="n">Client</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize_batch</span><span class="p">([</span><span class="s2">&quot;a.png&quot;</span><span class="p">,</span> <span class="s2">&quot;b.png&quot;</span><span class="p">,</span> <span class="s2">&quot;c.png&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">iter_results</span><span class="p">():</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">BatchSuccess</span><span class="p">):</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;failed:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.recognize_pdf" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_pdf</span>
+
+
+<a href="#turboocr.Client.recognize_pdf" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_pdf</span><span class="p">(</span><span class="n">pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfResponse (turboocr.models.PdfResponse)" href="../models/#turboocr.PdfResponse">PdfResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>OCR every page of a PDF.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>pdf</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>PDF bytes, path, or file-like object. See
+<code>ImageInput</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.content.ImageInput">ImageInput</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>dpi</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Server-side rasterization DPI (default <code>150</code>). Increase to
+<code>200</code>-<code>300</code> for tiny text; higher values cost proportionally
+more compute.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>150</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>mode</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>PDF reader strategy. One of:</p>
+<ul>
+<li><code>"ocr"</code> — re-OCR every page, ignoring any embedded text.</li>
+<li><code>"text"</code> — use the embedded text layer verbatim; no OCR.</li>
+<li><code>"auto"</code> — server decides per page based on whether a
+  text layer exists.</li>
+<li><code>"auto_verified"</code> — like <code>"auto"</code> but cross-checks the
+  text layer against OCR and falls back to OCR when they
+  disagree.</li>
+<li><code>"geometric"</code> — skip text recognition and recover only
+  layout / reading order.</li>
+</ul>
+<p><code>None</code> defers to the server default (currently <code>"auto"</code>).
+Accepts either the <a class="autorefs autorefs-internal" title="            PdfMode" href="../models/#turboocr.PdfMode"><code>PdfMode</code></a> enum or
+a plain string.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a> | <span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>layout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-page layout. Same semantics as
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>reading_order</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-page reading order.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>include_blocks</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-page block grouping.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._http.specs.BoolParam">BoolParam</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            PdfResponse (turboocr.models.PdfResponse)" href="../models/#turboocr.PdfResponse">PdfResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>A <a class="autorefs autorefs-internal" title="            PdfResponse" href="../models/#turboocr.PdfResponse"><code>PdfResponse</code></a> with one</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            PdfResponse (turboocr.models.PdfResponse)" href="../models/#turboocr.PdfResponse">PdfResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" title="            PdfPage" href="../models/#turboocr.PdfPage"><code>PdfPage</code></a> per input page and a flattened</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            PdfResponse (turboocr.models.PdfResponse)" href="../models/#turboocr.PdfResponse">PdfResponse</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p><code>.text</code> joiner.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p><code>mode</code> is not a valid <code>PdfMode</code>, or <code>dpi</code> is
+out of the server's accepted range.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            PdfRenderError (turboocr.errors.PdfRenderError)" href="../errors/#turboocr.PdfRenderError">PdfRenderError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Server failed to rasterize the PDF (corrupt
+file, encrypted without a password, etc.).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">turboocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">with</span> <span class="n">Client</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize_pdf</span><span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s2">&quot;report.pdf&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;auto_verified&quot;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">pages</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">page</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">text_layer_quality</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.health" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">health</span>
+
+
+<a href="#turboocr.Client.health" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">health</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">ready</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">live</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            HealthStatus (turboocr.models.HealthStatus)" href="../models/#turboocr.HealthStatus">HealthStatus</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Probe the server's health endpoints.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>ready</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Hit <code>/readyz</code> instead of <code>/healthz</code>. <code>/readyz</code>
+additionally requires the pipeline pool to be initialised
+and the GPU engines loaded.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="bool">bool</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>False</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>live</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Hit <code>/livez</code> instead of <code>/healthz</code>. <code>/livez</code> is the
+cheapest probe — it returns 200 as long as the process is
+up.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="bool">bool</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>False</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            HealthStatus (turboocr.models.HealthStatus)" href="../models/#turboocr.HealthStatus">HealthStatus</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>A <a class="autorefs autorefs-internal" title="            HealthStatus" href="../models/#turboocr.HealthStatus"><code>HealthStatus</code></a> carrying the HTTP</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            HealthStatus (turboocr.models.HealthStatus)" href="../models/#turboocr.HealthStatus">HealthStatus</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>status code, raw body, and (when JSON) the parsed body.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Both <code>ready</code> and <code>live</code> are <code>True</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout (note: HTTP
+errors are reflected as <code>status_code</code> / <code>ok=False</code>, not
+exceptions).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.make_searchable_pdf" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">make_searchable_pdf</span>
+
+
+<a href="#turboocr.Client.make_searchable_pdf" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">make_searchable_pdf</span><span class="p">(</span><span class="n">pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">font_path</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="bytes">bytes</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Return a PDF with an invisible text overlay aligned to the page geometry.</p>
+<p>The output is byte-identical to the input visually but its text is
+selectable, copyable, and full-text-searchable in every viewer. For
+non-Latin scripts the SDK auto-discovers a Unicode font on disk; you
+can override the lookup with <code>font_path</code> or the <code>TURBO_OCR_FONT</code>
+env var.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>pdf</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>PDF bytes, path, or file-like object. See
+<code>ImageInput</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.content.ImageInput">ImageInput</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>dpi</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Rasterization DPI for the underlying recognise call
+(default <code>200</code>; higher than <code>recognize_pdf</code> because overlay
+alignment is more sensitive to small glyph drift).</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>200</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>mode</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>PDF reader strategy; see
+<a class="autorefs autorefs-internal" title="            recognize_pdf" href="#turboocr.Client.recognize_pdf"><code>recognize_pdf</code></a>. <code>None</code>
+uses the server default.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a> | <span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>font_path</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Absolute path to a <code>.ttf</code>/<code>.otf</code> Unicode font. When
+<code>None</code>, the SDK searches a list of common font locations
+and the <code>TURBO_OCR_FONT</code> env var.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><span title="bytes">bytes</span></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>The output PDF as <code>bytes</code>, ready to write to disk or stream.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            UnicodeFontRequired (turboocr.searchable_pdf.UnicodeFontRequired)" href="../searchable_pdf/#turboocr.UnicodeFontRequired">UnicodeFontRequired</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Non-Latin text was detected and no
+Unicode font could be located.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            FontGlyphMissing (turboocr.searchable_pdf.FontGlyphMissing)" href="../searchable_pdf/#turboocr.FontGlyphMissing">FontGlyphMissing</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>A required glyph is missing from the chosen
+font.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            PdfRenderError (turboocr.errors.PdfRenderError)" href="../errors/#turboocr.PdfRenderError">PdfRenderError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Server failed to rasterize the PDF.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout on the
+underlying <code>recognize_pdf</code> call.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.Client.to_markdown" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_markdown</span>
+
+
+<a href="#turboocr.Client.to_markdown" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">to_markdown</span><span class="p">(</span><span class="n">image_or_pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            MarkdownStyle (turboocr.markdown.MarkdownStyle)" href="../markdown/#turboocr.MarkdownStyle">MarkdownStyle</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            MarkdownDocument (turboocr.markdown.MarkdownDocument)" href="../markdown/#turboocr.MarkdownDocument">MarkdownDocument</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>One-call OCR + layout + reading-order + blocks → Markdown.</p>
+<p>Detects PDF vs image by the magic bytes <code>b"%PDF-"</code>, then calls
+<a class="autorefs autorefs-internal" title="            recognize_pdf" href="#turboocr.Client.recognize_pdf"><code>recognize_pdf</code></a> or
+<a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>recognize_image</code></a> with
+<code>include_blocks=True</code> and pipes the response through
+<a class="autorefs autorefs-internal" title="            render_to_markdown" href="../markdown/#turboocr.render_to_markdown"><code>render_to_markdown</code></a>.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>image_or_pdf</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Image or PDF input. See
+<code>ImageInput</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="turboocr._core.content.ImageInput">ImageInput</span></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>dpi</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Rasterization DPI for the PDF branch (default <code>150</code>).
+Ignored for images.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="int">int</span></code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>150</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>mode</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>PDF reader strategy for the PDF branch; see
+<a class="autorefs autorefs-internal" title="            recognize_pdf" href="#turboocr.Client.recognize_pdf"><code>recognize_pdf</code></a>. Ignored
+for images.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a> | <span title="str">str</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>style</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" title="            MarkdownStyle" href="../markdown/#turboocr.MarkdownStyle"><code>MarkdownStyle</code></a> controlling
+label-to-node mapping and per-kind renderers. <code>None</code> uses
+<code>DEFAULT_STYLE</code>.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-internal" title="            MarkdownStyle (turboocr.markdown.MarkdownStyle)" href="../markdown/#turboocr.MarkdownStyle">MarkdownStyle</a> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>timeout</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>Per-request timeout override in seconds.</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="float">float</span> | None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            MarkdownDocument (turboocr.markdown.MarkdownDocument)" href="../markdown/#turboocr.MarkdownDocument">MarkdownDocument</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>A <a class="autorefs autorefs-internal" title="            MarkdownDocument" href="../markdown/#turboocr.MarkdownDocument"><code>MarkdownDocument</code></a> with the</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-internal" title="            MarkdownDocument (turboocr.markdown.MarkdownDocument)" href="../markdown/#turboocr.MarkdownDocument">MarkdownDocument</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>rendered <code>.markdown</code> string and the structured <code>.nodes</code> list.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RAISES</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ProtocolError (turboocr.errors.ProtocolError)" href="../errors/#turboocr.ProtocolError">ProtocolError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Server returned a layout-enabled response with
+inconsistent IDs (text item missing <code>layout_id</code>, dangling
+reference to a layout box).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            InvalidParameter (turboocr.errors.InvalidParameter)" href="../errors/#turboocr.InvalidParameter">InvalidParameter</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Underlying recognise call rejected the
+input.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            APIConnectionError (turboocr.errors.APIConnectionError)" href="../errors/#turboocr.APIConnectionError">APIConnectionError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>Network failure or timeout.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+              <span class="doc-raises-annotation">
+                  <code><a class="autorefs autorefs-internal" title="            ServerError (turboocr.errors.ServerError)" href="../errors/#turboocr.ServerError">ServerError</a></code>
+              </span>
+            </td>
+            <td class="doc-raises-details">
+              <div class="doc-md-description">
+                <p>5xx response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="asyncclient"><code>AsyncClient</code><a class="headerlink" href="#asyncclient" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="turboocr.AsyncClient" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">AsyncClient</span>
+
+
+<a href="#turboocr.AsyncClient" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">AsyncClient</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">auth_scheme</span><span class="p">:</span> <span class="n"><span title="turboocr._core.env.AuthScheme">AuthScheme</span></span> <span class="o">=</span> <span class="s1">&#39;bearer&#39;</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">=</span> <span class="n"><span title="turboocr._core.env.DEFAULT_TIMEOUT">DEFAULT_TIMEOUT</span></span><span class="p">,</span> <span class="n">default_headers</span><span class="p">:</span> <span class="n"><span title="collections.abc.Mapping">Mapping</span></span><span class="p">[</span><span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="n"><span title="str">str</span></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            RetryPolicy
+
+
+  
+      dataclass
+   (turboocr._core.retry.RetryPolicy)" href="../retry/#turboocr.RetryPolicy">RetryPolicy</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="p">:</span> <span class="n"><span title="httpx.AsyncBaseTransport">AsyncBaseTransport</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="p">:</span> <span class="n"><span title="httpx.AsyncClient">AsyncClient</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limits</span><span class="p">:</span> <span class="n"><span title="httpx.Limits">Limits</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_request</span><span class="p">:</span> <span class="n"><span title="turboocr._http.client.AsyncRequestHook">AsyncRequestHook</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">on_response</span><span class="p">:</span> <span class="n"><span title="turboocr._http.client.AsyncResponseHook">AsyncResponseHook</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="turboocr._http.client._BaseClient">_BaseClient</span></code></p>
+
+
+
+        <p>Asynchronous HTTP client for the Turbo-OCR server.</p>
+<p>Mirror of <a class="autorefs autorefs-internal" title="            Client" href="#turboocr.Client"><code>Client</code></a> over <code>httpx.AsyncClient</code>. Every
+request method is the awaitable counterpart of the sync one; see the
+<code>Client</code> method for full docs.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">METHOD</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            from_env
+
+
+  
+      classmethod
+   (turboocr.AsyncClient.from_env)" href="#turboocr.AsyncClient.from_env">from_env</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            from_env
+
+
+  
+      classmethod
+  " href="#turboocr.Client.from_env"><code>Client.from_env</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            aclose
+
+
+  
+      async
+   (turboocr.AsyncClient.aclose)" href="#turboocr.AsyncClient.aclose">aclose</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Close the underlying async HTTP session. Prefer <code>async with</code> over this.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_image
+
+
+  
+      async
+   (turboocr.AsyncClient.recognize_image)" href="#turboocr.AsyncClient.recognize_image">recognize_image</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>Client.recognize_image</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_base64
+
+
+  
+      async
+   (turboocr.AsyncClient.recognize_base64)" href="#turboocr.AsyncClient.recognize_base64">recognize_base64</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_base64" href="#turboocr.Client.recognize_base64"><code>Client.recognize_base64</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_pixels
+
+
+  
+      async
+   (turboocr.AsyncClient.recognize_pixels)" href="#turboocr.AsyncClient.recognize_pixels">recognize_pixels</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_pixels" href="#turboocr.Client.recognize_pixels"><code>Client.recognize_pixels</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_batch
+
+
+  
+      async
+   (turboocr.AsyncClient.recognize_batch)" href="#turboocr.AsyncClient.recognize_batch">recognize_batch</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_batch" href="#turboocr.Client.recognize_batch"><code>Client.recognize_batch</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            recognize_pdf
+
+
+  
+      async
+   (turboocr.AsyncClient.recognize_pdf)" href="#turboocr.AsyncClient.recognize_pdf">recognize_pdf</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_pdf" href="#turboocr.Client.recognize_pdf"><code>Client.recognize_pdf</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            health
+
+
+  
+      async
+   (turboocr.AsyncClient.health)" href="#turboocr.AsyncClient.health">health</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            health" href="#turboocr.Client.health"><code>Client.health</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            make_searchable_pdf
+
+
+  
+      async
+   (turboocr.AsyncClient.make_searchable_pdf)" href="#turboocr.AsyncClient.make_searchable_pdf">make_searchable_pdf</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of</p>
+                </div>
+              </td>
+            </tr>
+            <tr class="doc-section-item">
+              <td><code><a class="autorefs autorefs-internal" title="            to_markdown
+
+
+  
+      async
+   (turboocr.AsyncClient.to_markdown)" href="#turboocr.AsyncClient.to_markdown">to_markdown</a></code></td>
+              <td class="doc-function-details">
+                <div class="doc-md-description">
+                  <p>Async equivalent of <a class="autorefs autorefs-internal" title="            to_markdown" href="#turboocr.Client.to_markdown"><code>Client.to_markdown</code></a>.</p>
+                </div>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.from_env" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">from_env</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.from_env" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_env</span><span class="p">(</span><span class="o">**</span><span class="n">overrides</span><span class="p">:</span> <span class="n"><span title="typing.Unpack">Unpack</span></span><span class="p">[</span><span class="n"><span title="turboocr._http.client._AsyncClientKwargs">_AsyncClientKwargs</span></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Self">Self</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            from_env
+
+
+  
+      classmethod
+  " href="#turboocr.Client.from_env"><code>Client.from_env</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.aclose" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">aclose</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.aclose" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">aclose</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Close the underlying async HTTP session. Prefer <code>async with</code> over this.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.recognize_image" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_image</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.recognize_image" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_image" href="#turboocr.Client.recognize_image"><code>Client.recognize_image</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.recognize_base64" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_base64</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.recognize_base64" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_base64</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="n"><span title="str">str</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_base64" href="#turboocr.Client.recognize_base64"><code>Client.recognize_base64</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.recognize_pixels" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_pixels</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.recognize_pixels" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_pixels</span><span class="p">(</span><span class="n">pixels</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n"><span title="int">int</span></span><span class="p">,</span> <span class="n">channels</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            OcrResponse (turboocr.models.OcrResponse)" href="../models/#turboocr.OcrResponse">OcrResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_pixels" href="#turboocr.Client.recognize_pixels"><code>Client.recognize_pixels</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.recognize_batch" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_batch</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.recognize_batch" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_batch</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n"><span title="collections.abc.Iterable">Iterable</span></span><span class="p">[</span><span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            BatchResponse (turboocr.models.BatchResponse)" href="../models/#turboocr.BatchResponse">BatchResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_batch" href="#turboocr.Client.recognize_batch"><code>Client.recognize_batch</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.recognize_pdf" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">recognize_pdf</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.recognize_pdf" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">recognize_pdf</span><span class="p">(</span><span class="n">pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">layout</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reading_order</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_blocks</span><span class="p">:</span> <span class="n"><span title="turboocr._http.specs.BoolParam">BoolParam</span></span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfResponse (turboocr.models.PdfResponse)" href="../models/#turboocr.PdfResponse">PdfResponse</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            recognize_pdf" href="#turboocr.Client.recognize_pdf"><code>Client.recognize_pdf</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.health" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">health</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.health" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">health</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">ready</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">live</span><span class="p">:</span> <span class="n"><span title="bool">bool</span></span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            HealthStatus (turboocr.models.HealthStatus)" href="../models/#turboocr.HealthStatus">HealthStatus</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            health" href="#turboocr.Client.health"><code>Client.health</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.make_searchable_pdf" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">make_searchable_pdf</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.make_searchable_pdf" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">make_searchable_pdf</span><span class="p">(</span><span class="n">pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">font_path</span><span class="p">:</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="bytes">bytes</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of
+<a class="autorefs autorefs-internal" title="            make_searchable_pdf" href="#turboocr.Client.make_searchable_pdf">Client.make_searchable_pdf</a>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="turboocr.AsyncClient.to_markdown" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">to_markdown</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#turboocr.AsyncClient.to_markdown" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">to_markdown</span><span class="p">(</span><span class="n">image_or_pdf</span><span class="p">:</span> <span class="n"><span title="turboocr._core.content.ImageInput">ImageInput</span></span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dpi</span><span class="p">:</span> <span class="n"><span title="int">int</span></span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            PdfMode (turboocr.models.PdfMode)" href="../models/#turboocr.PdfMode">PdfMode</a></span> <span class="o">|</span> <span class="n"><span title="str">str</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            MarkdownStyle (turboocr.markdown.MarkdownStyle)" href="../markdown/#turboocr.MarkdownStyle">MarkdownStyle</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n"><span title="float">float</span></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="            MarkdownDocument (turboocr.markdown.MarkdownDocument)" href="../markdown/#turboocr.MarkdownDocument">MarkdownDocument</a></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Async equivalent of <a class="autorefs autorefs-internal" title="            to_markdown" href="#turboocr.Client.to_markdown"><code>Client.to_markdown</code></a>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
