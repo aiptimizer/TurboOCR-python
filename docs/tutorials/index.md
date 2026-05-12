@@ -18,6 +18,6 @@ the way it does, see [Explanation](../explanation/index.md).
    and have them OCR'd concurrently with bounded parallelism. Intermediate.
 
 Each tutorial uses the bundled `acme_invoice.pdf` / `acme_invoice.png`
-fixtures from the [examples directory](https://github.com/aiptimizer/turboocr-python/tree/develop/examples/sample),
+fixtures from the [examples directory](https://github.com/aiptimizer/TurboOCR-python/tree/main/examples/sample),
 so you can run every snippet against real data without finding your own
 sample files.

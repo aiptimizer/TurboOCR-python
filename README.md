@@ -171,7 +171,7 @@ resolution logs to `turboocr.searchable_pdf`. Every HTTP request sends a uuid7
 - [`examples/`](examples/) — 13 runnable scripts (each runs against the bundled
   ACME invoice fixture, no server config needed beyond `TURBO_OCR_BASE_URL`)
 - [`docs/`](docs/) — full docs source (MkDocs + mkdocstrings, deployed at
-  https://aiptimizer.github.io/turboocr-python/). Preview locally with
+  https://aiptimizer.github.io/TurboOCR-python/). Preview locally with
   `uv run --extra docs mkdocs serve -f docs/mkdocs.yml`
 - Server compatibility: `SERVER_API_VERSION_MIN` /
   `SERVER_API_VERSION_MAX_EXCLUSIVE` document the supported server range;

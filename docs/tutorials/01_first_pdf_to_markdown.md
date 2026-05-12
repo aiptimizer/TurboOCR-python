@@ -12,7 +12,7 @@ minutes if the server is already running.
   default is `http://localhost:8000`.
 - The bundled `acme_invoice.pdf` and `acme_invoice.png` fixtures (clone the
   repo or download them from
-  [`examples/sample/`](https://github.com/aiptimizer/turboocr-python/tree/develop/examples/sample)).
+  [`examples/sample/`](https://github.com/aiptimizer/TurboOCR-python/tree/main/examples/sample)).
 
 This tutorial assumes the server is configured for **Latin** OCR, which is
 the bundled default.

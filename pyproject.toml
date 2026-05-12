@@ -73,8 +73,8 @@ turbo-ocr = "turboocr.cli:app"
 
 [project.urls]
 Homepage = "https://turboocr.com"
-Repository = "https://github.com/aiptimizer/turboocr-python"
-Issues = "https://github.com/aiptimizer/turboocr-python/issues"
+Repository = "https://github.com/aiptimizer/TurboOCR-python"
+Issues = "https://github.com/aiptimizer/TurboOCR-python/issues"
 Server = "https://github.com/aiptimizer/TurboOCR"
 
 [tool.hatch.build.targets.wheel]

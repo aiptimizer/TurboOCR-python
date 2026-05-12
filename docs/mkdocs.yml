@@ -1,8 +1,8 @@
 site_name: turboocr
 site_description: Typed Python client for the TurboOCR server.
-site_url: https://aiptimizer.github.io/turboocr-python/
-repo_url: https://github.com/aiptimizer/turboocr-python
-repo_name: aiptimizer/turboocr-python
+site_url: https://aiptimizer.github.io/TurboOCR-python/
+repo_url: https://github.com/aiptimizer/TurboOCR-python
+repo_name: aiptimizer/TurboOCR-python
 edit_uri: edit/develop/docs/
 
 docs_dir: .
