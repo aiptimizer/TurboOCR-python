@@ -186,9 +186,7 @@ class GrpcClient(_BaseGrpcClient):
         if self._owns_channel:
             self._channel.close()
         else:
-            logger.debug(
-                "GrpcClient.close(): external channel — caller owns lifecycle"
-            )
+            logger.debug("GrpcClient.close(): external channel — caller owns lifecycle")
 
     def _call(
         self,
@@ -211,9 +209,7 @@ class GrpcClient(_BaseGrpcClient):
             return result
 
         try:
-            return execute_grpc_with_retries(
-                policy=self._retry, rpc=rpc, attempt_send=attempt
-            )
+            return execute_grpc_with_retries(policy=self._retry, rpc=rpc, attempt_send=attempt)
         except grpc.RpcError as exc:
             raise classify_rpc_error(exc) from exc
 
@@ -224,11 +220,14 @@ class GrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """gRPC equivalent of [`Client.recognize_image`][turboocr.Client.recognize_image]."""
         req = build_recognize_request(
-            read_image_bytes(image), OcrOptions(layout, reading_order, include_blocks)
+            read_image_bytes(image),
+            OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = self._call("Recognize", self._stub.Recognize, req, timeout=timeout)
         return parse_ocr_response(resp)
@@ -240,6 +239,8 @@ class GrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """gRPC equivalent of [`Client.recognize_base64`][turboocr.Client.recognize_base64].
@@ -253,6 +254,8 @@ class GrpcClient(_BaseGrpcClient):
             layout=layout,
             reading_order=reading_order,
             include_blocks=include_blocks,
+            tables=tables,
+            formulas=formulas,
             timeout=timeout,
         )
 
@@ -266,6 +269,8 @@ class GrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """gRPC equivalent of [`Client.recognize_pixels`][turboocr.Client.recognize_pixels]."""
@@ -274,7 +279,7 @@ class GrpcClient(_BaseGrpcClient):
             width=width,
             height=height,
             channels=channels,
-            opts=OcrOptions(layout, reading_order, include_blocks),
+            opts=OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = self._call("Recognize", self._stub.Recognize, req, timeout=timeout)
         return parse_ocr_response(resp)
@@ -286,12 +291,14 @@ class GrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> BatchResponse:
         """gRPC equivalent of [`Client.recognize_batch`][turboocr.Client.recognize_batch]."""
         req = build_recognize_batch_request(
             (read_image_bytes(img) for img in images),
-            OcrOptions(layout, reading_order, include_blocks),
+            OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = self._call("RecognizeBatch", self._stub.RecognizeBatch, req, timeout=timeout)
         return parse_batch_response(resp)
@@ -305,6 +312,8 @@ class GrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> PdfResponse:
         """gRPC equivalent of [`Client.recognize_pdf`][turboocr.Client.recognize_pdf].
@@ -317,7 +326,7 @@ class GrpcClient(_BaseGrpcClient):
             read_image_bytes(pdf),
             dpi=dpi,
             mode=mode,
-            opts=OcrOptions(layout, reading_order, include_blocks),
+            opts=OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = self._call("RecognizePDF", self._stub.RecognizePDF, req, timeout=timeout)
         return parse_pdf_response(resp)
@@ -347,9 +356,7 @@ class GrpcClient(_BaseGrpcClient):
         """
         raw = read_image_bytes(source)
         if raw.startswith(b"%PDF-"):
-            response: OcrResponse | PdfResponse = self.recognize_pdf(
-                raw, dpi=dpi, mode=mode
-            )
+            response: OcrResponse | PdfResponse = self.recognize_pdf(raw, dpi=dpi, mode=mode)
         else:
             response = self.recognize_image(
                 raw, layout=True, reading_order=True, include_blocks=True
@@ -433,9 +440,7 @@ class AsyncGrpcClient(_BaseGrpcClient):
         if self._owns_channel:
             await self._channel.close()
         else:
-            logger.debug(
-                "AsyncGrpcClient.aclose(): external channel — caller owns lifecycle"
-            )
+            logger.debug("AsyncGrpcClient.aclose(): external channel — caller owns lifecycle")
 
     async def _call(
         self,
@@ -471,11 +476,14 @@ class AsyncGrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """Async gRPC equivalent of [`Client.recognize_image`][turboocr.Client.recognize_image]."""
         req = build_recognize_request(
-            read_image_bytes(image), OcrOptions(layout, reading_order, include_blocks)
+            read_image_bytes(image),
+            OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = await self._call("Recognize", self._stub.Recognize, req, timeout=timeout)
         return parse_ocr_response(resp)
@@ -487,6 +495,8 @@ class AsyncGrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """Async gRPC equivalent of
@@ -497,6 +507,8 @@ class AsyncGrpcClient(_BaseGrpcClient):
             layout=layout,
             reading_order=reading_order,
             include_blocks=include_blocks,
+            tables=tables,
+            formulas=formulas,
             timeout=timeout,
         )
 
@@ -510,6 +522,8 @@ class AsyncGrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> OcrResponse:
         """Async gRPC equivalent of
@@ -520,7 +534,7 @@ class AsyncGrpcClient(_BaseGrpcClient):
             width=width,
             height=height,
             channels=channels,
-            opts=OcrOptions(layout, reading_order, include_blocks),
+            opts=OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = await self._call("Recognize", self._stub.Recognize, req, timeout=timeout)
         return parse_ocr_response(resp)
@@ -532,12 +546,14 @@ class AsyncGrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> BatchResponse:
         """Async gRPC equivalent of [`Client.recognize_batch`][turboocr.Client.recognize_batch]."""
         req = build_recognize_batch_request(
             (read_image_bytes(img) for img in images),
-            OcrOptions(layout, reading_order, include_blocks),
+            OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = await self._call("RecognizeBatch", self._stub.RecognizeBatch, req, timeout=timeout)
         return parse_batch_response(resp)
@@ -551,6 +567,8 @@ class AsyncGrpcClient(_BaseGrpcClient):
         layout: BoolParam = None,
         reading_order: BoolParam = None,
         include_blocks: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
         timeout: float | None = None,
     ) -> PdfResponse:
         """Async gRPC equivalent of
@@ -560,7 +578,7 @@ class AsyncGrpcClient(_BaseGrpcClient):
             read_image_bytes(pdf),
             dpi=dpi,
             mode=mode,
-            opts=OcrOptions(layout, reading_order, include_blocks),
+            opts=OcrOptions(layout, reading_order, include_blocks, tables, formulas),
         )
         resp = await self._call("RecognizePDF", self._stub.RecognizePDF, req, timeout=timeout)
         return parse_pdf_response(resp)
@@ -590,9 +608,7 @@ class AsyncGrpcClient(_BaseGrpcClient):
         """
         raw = read_image_bytes(source)
         if raw.startswith(b"%PDF-"):
-            response: OcrResponse | PdfResponse = await self.recognize_pdf(
-                raw, dpi=dpi, mode=mode
-            )
+            response: OcrResponse | PdfResponse = await self.recognize_pdf(raw, dpi=dpi, mode=mode)
         else:
             response = await self.recognize_image(
                 raw, layout=True, reading_order=True, include_blocks=True
