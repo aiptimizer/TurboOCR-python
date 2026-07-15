@@ -5,7 +5,7 @@ import logging
 import time
 from collections.abc import AsyncIterator, Awaitable, Callable, Iterable, Iterator, Mapping
 from types import MappingProxyType, TracebackType
-from typing import Any, Final, NotRequired, Self, TypedDict, TypeVar, Unpack
+from typing import Any, Final, Literal, NotRequired, Self, TypedDict, TypeVar, Unpack, overload
 
 import httpx
 from pydantic import BaseModel
@@ -739,6 +739,34 @@ class Client(_BaseClient):
         response = self._send(page_markdown_spec(image, embed=embed), timeout=timeout)
         return parse_text_response(response)
 
+    @overload
+    def pdf_markdown(
+        self,
+        pdf: ImageInput,
+        *,
+        as_pages: Literal[True],
+        dpi: int | None = None,
+        mode: PdfMode | str | None = None,
+        autorotate: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
+        timeout: float | None = None,
+    ) -> MarkdownPagesResponse: ...
+
+    @overload
+    def pdf_markdown(
+        self,
+        pdf: ImageInput,
+        *,
+        as_pages: Literal[False] = False,
+        dpi: int | None = None,
+        mode: PdfMode | str | None = None,
+        autorotate: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
+        timeout: float | None = None,
+    ) -> str: ...
+
     def pdf_markdown(
         self,
         pdf: ImageInput,
@@ -1235,6 +1263,34 @@ class AsyncClient(_BaseClient):
         """Async equivalent of [`Client.page_markdown`][turboocr.Client.page_markdown]."""
         response = await self._send(page_markdown_spec(image, embed=embed), timeout=timeout)
         return parse_text_response(response)
+
+    @overload
+    async def pdf_markdown(
+        self,
+        pdf: ImageInput,
+        *,
+        as_pages: Literal[True],
+        dpi: int | None = None,
+        mode: PdfMode | str | None = None,
+        autorotate: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
+        timeout: float | None = None,
+    ) -> MarkdownPagesResponse: ...
+
+    @overload
+    async def pdf_markdown(
+        self,
+        pdf: ImageInput,
+        *,
+        as_pages: Literal[False] = False,
+        dpi: int | None = None,
+        mode: PdfMode | str | None = None,
+        autorotate: BoolParam = None,
+        tables: BoolParam = None,
+        formulas: BoolParam = None,
+        timeout: float | None = None,
+    ) -> str: ...
 
     async def pdf_markdown(
         self,

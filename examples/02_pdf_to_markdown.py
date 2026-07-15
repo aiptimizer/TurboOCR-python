@@ -17,7 +17,6 @@ client = Client(timeout=120.0)
 
 # --- 1. server-side, whole document in one call ---
 md = client.pdf_markdown(PDF, dpi=150)
-assert isinstance(md, str)
 print(f"server-side: {len(md)} chars")
 print(md[:300])
 
