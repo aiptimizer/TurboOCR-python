@@ -210,3 +210,8 @@ python examples/03_searchable_pdf.py                         # smoke test
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+<p align="center">
+  <a href="https://turboocr.com"><strong>turboocr.com</strong></a> · <a href="https://github.com/aiptimizer/TurboOCR"><strong>⭐ Star TurboOCR on GitHub</strong></a><br>
+  <sub>Sponsored by <a href="https://miruiq.com"><strong>Miruiq</strong></a> — AI-powered data extraction from PDFs and documents — and <a href="https://diaiq.com"><strong>DiaIQ</strong></a>.</sub>
+</p>
