@@ -43,7 +43,9 @@ benchmarks, and the full set of server env vars.
 Then recognise an image and turn a PDF into Markdown:
 
 ```python
-from turboocr import Client, render_to_markdown
+from pathlib import Path
+
+from turboocr import Client
 
 with Client(base_url="http://localhost:8000") as client:
     # Image OCR
@@ -51,8 +53,9 @@ with Client(base_url="http://localhost:8000") as client:
     print(f"{len(img.results)} text items, {len(img.blocks)} blocks")
     print(img.text)
 
-    # PDF → Markdown (rendered server-side, tables → HTML, formulas → LaTeX)
-    print(client.pdf_markdown("paper.pdf", dpi=150))
+    # PDF → Markdown file (rendered server-side: tables → HTML, formulas →
+    # LaTeX, figures embedded as data URIs — a real, self-contained .md)
+    Path("paper.md").write_text(client.pdf_markdown("paper.pdf", dpi=150))
 
     # Tables + formulas as structured fields (strict opt-in, v3.1+ server)
     rich = client.recognize_image("paper.png", tables=True, formulas=True)
